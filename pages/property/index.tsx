@@ -53,22 +53,25 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setProperties(data?.getProperties?.list);
-			setTotal(data?.getProperties?.metaCounter[0]?.total);  // jami propertylar soni
+			setTotal(data?.getProperties?.metaCounter[0]?.total);
 		},
 	});
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
 			const inputObj = JSON.parse(router?.query?.input as string);
+			console.log('++++inputObj', inputObj);
 			setSearchFilter(inputObj);
 		}
 
-		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
+		console.log('searchFilter.page', searchFilter.page);
+		setCurrentPage(searchFilter.page === undefined ? 1 : Number(searchFilter.page));
 	}, [router]);
 
 	useEffect(() => {
-		console.log('searchFilter:', searchFilter);
-		// getPropertiesRefetch({input: searchFilter}).then();
+		console.log('searchFilter', searchFilter);
+		getPropertiesRefetch({ input: searchFilter }).then();
 	}, [searchFilter]);
 
 	/** HANDLERS **/
@@ -82,6 +85,24 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 			},
 		);
 		setCurrentPage(value);
+	};
+
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetProperty({
+				variables: { input: id },
+			});
+
+			await getPropertiesRefetch({ input: initialInput });
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR, likePropertyHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
 	};
 
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
@@ -166,7 +187,9 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									properties.map((property: Property) => {
-										return <PropertyCard property={property} key={property?._id} />;
+										return (
+											<PropertyCard property={property} key={property?._id} likePropertyHandler={likePropertyHandler} />
+										);
 									})
 								)}
 							</Stack>
