@@ -59,7 +59,7 @@ const TopProperties = (props: TopPropertiesProps) => {
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
-
+	
 	if (device === 'mobile') {
 		return (
 			<Stack className={'top-properties'}>
