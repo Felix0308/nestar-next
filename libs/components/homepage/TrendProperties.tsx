@@ -10,10 +10,10 @@ import { PropertiesInquiry } from '../../types/property/property.input';
 import TrendPropertyCard from './TrendPropertyCard';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { useMutation, useQuery } from '@apollo/client';
+import { T } from '../../types/common';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { Message } from '../../enums/common.enum';
-import { T } from '../../types/common';
 
 interface TrendPropertiesProps {
 	initialInput: PropertiesInquiry;
