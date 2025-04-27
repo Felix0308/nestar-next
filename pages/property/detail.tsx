@@ -194,7 +194,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 					input: insertCommentData,
 				},
 			});
-
+			
 			setInsertCommentData({ ...insertCommentData, commentContent: '' });
 
 			await getCommentsRefetch({ input: commentInquiry });
