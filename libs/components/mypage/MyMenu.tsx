@@ -13,10 +13,10 @@ import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 const MyMenu = () => {
 	const device = useDeviceDetect();
+	const user = useReactiveVar(userVar);
 	const router = useRouter();
 	const pathname = router.query.category ?? 'myProfile';
 	const category: any = router.query?.category ?? 'myProfile';
-	const user = useReactiveVar(userVar);
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
